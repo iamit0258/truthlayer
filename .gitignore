@@ -1,0 +1,8 @@
+.env
+__pycache__/
+*.pyc
+temp.pdf
+preview.png
+report.csv
+GEO_Product_Strategy.pptx
+generate_ppt.py

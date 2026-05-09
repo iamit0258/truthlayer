@@ -1,0 +1,8 @@
+streamlit
+pymupdf
+tavily-python
+groq
+python-pptx
+python-dotenv
+pandas
+altair
