@@ -57,6 +57,17 @@ The included strategy document (`GEO_Product_Strategy.pptx`) outlines a comprehe
 - **Document Logic**: PyMuPDF
 - **Styling**: Vanilla CSS / Glassmorphism
 
+## 🚀 Deployment (Streamlit Cloud)
+
+The easiest way to deploy this app is via **Streamlit Cloud**:
+1. Connect your GitHub account to [Streamlit Cloud](https://share.streamlit.io/).
+2. Select this repository (`truthlayer`) and point it to `app.py`.
+3. In **Advanced Settings > Secrets**, add your API keys:
+   ```toml
+   GROQ_API_KEY = "your_groq_key"
+   TAVILY_API_KEY = "your_tavily_key"
+   ```
+
 ---
 **Author**: Amit K.
 **Date**: May 2026
