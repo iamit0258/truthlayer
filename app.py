@@ -126,30 +126,49 @@ st.markdown("""
     }
     .metric-card {
         flex: 1;
-        background: rgba(15, 23, 42, 0.4);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 20px;
-        padding: 1.5rem;
+        background: rgba(30, 41, 59, 0.4);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 24px;
+        padding: 1.75rem 1rem;
         text-align: center;
-        transition: all 0.3s ease;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.2);
     }
     .metric-card:hover {
-        background: rgba(15, 23, 42, 0.6);
-        border-color: rgba(255, 255, 255, 0.15);
+        transform: translateY(-5px);
+        background: rgba(30, 41, 59, 0.6);
+        border-color: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 12px 30px rgba(0,0,0,0.4);
     }
     .metric-value {
-        font-size: 2.5rem;
+        font-size: 3rem;
         font-weight: 800;
-        margin-bottom: 0.25rem;
+        margin-bottom: 0.5rem;
         line-height: 1;
+        background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
     .metric-label {
-        font-size: 0.8rem;
+        font-size: 0.75rem;
         color: var(--text-dim);
         text-transform: uppercase;
-        letter-spacing: 0.1em;
-        font-weight: 600;
+        letter-spacing: 0.15em;
+        font-weight: 700;
     }
+
+    /* Error Message */
+    .error-card {
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.2);
+        border-radius: 20px;
+        padding: 2rem;
+        text-align: center;
+        margin: 2rem 0;
+    }
+    .error-title { color: #ef4444; font-weight: 700; font-size: 1.2rem; margin-bottom: 0.5rem; }
+    .error-text { color: #fca5a5; font-size: 0.9rem; }
 
     /* Status Badges */
     .status-badge {
@@ -286,18 +305,38 @@ if st.session_state.report is None:
             
             st.markdown("<br>", unsafe_allow_html=True)
             if st.button("🚀 Verify Claims Now"):
-                with st.spinner("🕵️ Analyzing claims and fetching deep-dive evidence..."):
-                    try:
-                        checker = FactChecker(groq_key, tavily_key)
-                        st.session_state.report = checker.process_document("temp.pdf")
-                        st.session_state.preview_img = get_pdf_preview("temp.pdf")
-                        st.rerun()
-                    except Exception as e:
-                        st.error(f"Error: {e}")
+                status_box = st.empty()
+                def update_status(text):
+                    status_box.markdown(f"""
+                        <div style="background: rgba(14, 165, 233, 0.1); border: 1px solid rgba(14, 165, 233, 0.2); padding: 1rem; border-radius: 12px; text-align: center; color: #38bdf8; font-weight: 600; margin-bottom: 1rem;">
+                            <span style="display: inline-block; animation: spin 2s linear infinite; margin-right: 10px;">⏳</span> {text}
+                        </div>
+                        <style>@keyframes spin {{ 0% {{ transform: rotate(0deg); }} 100% {{ transform: rotate(360deg); }} }}</style>
+                    """, unsafe_allow_html=True)
+
+                try:
+                    checker = FactChecker(groq_key, tavily_key, status_callback=update_status)
+                    # Extract text first for preview
+                    text = checker.extract_text_from_pdf("temp.pdf")
+                    st.session_state.extracted_text = text
+                    
+                    st.session_state.report = checker.process_document("temp.pdf", status_callback=update_status)
+                    st.session_state.preview_img = get_pdf_preview("temp.pdf")
+                    status_box.empty()
+                    st.rerun()
+                except Exception as e:
+                    status_box.markdown(f"""
+                        <div class="error-card">
+                            <div class="error-title">Analysis Failed</div>
+                            <div class="error-text">{str(e)}</div>
+                        </div>
+                    """, unsafe_allow_html=True)
         else:
             st.markdown("""
-                <div style="text-align: center; color: #64748b; margin-top: 1.5rem;">
-                    <p>Drop your marketing PDF here to verify its claims against live web data.</p>
+                <div style="text-align: center; padding: 4rem 2rem; background: rgba(30, 41, 59, 0.2); border: 2px dashed rgba(255,255,255,0.1); border-radius: 40px; margin-top: 2rem;">
+                    <div style="font-size: 4rem; margin-bottom: 1rem;">📁</div>
+                    <h3 style="color: #fff; margin-bottom: 0.5rem;">Ready to Scan</h3>
+                    <p style="color: #64748b; max-width: 400px; margin: 0 auto;">Drop your marketing PDF here to verify its claims against live web data using AI-powered fact checking.</p>
                 </div>
             """, unsafe_allow_html=True)
 
@@ -326,8 +365,16 @@ else:
         if st.button("🔄 Analyze New File"):
             st.session_state.report = None
             st.session_state.file_info = None
+            if 'extracted_text' in st.session_state: del st.session_state.extracted_text
             st.rerun()
             
+        with st.expander("📄 VIEW EXTRACTED TEXT"):
+            if 'extracted_text' in st.session_state:
+                st.code(st.session_state.extracted_text[:2000] + ("..." if len(st.session_state.extracted_text) > 2000 else ""), language="text")
+            else:
+                st.info("Text preview not available for this session.")
+        
+        st.markdown("<br>", unsafe_allow_html=True)
         df = pd.DataFrame(st.session_state.report)
         st.download_button(
             label="📥 Download Audit Log",
@@ -346,18 +393,27 @@ else:
             <div class="metric-container">
                 <div class="metric-card">
                     <div class="metric-value">{total}</div>
-                    <div class="metric-label">Total Claims</div>
+                    <div class="metric-label">Total Claims Identified</div>
                 </div>
-                <div class="metric-card" style="border-bottom: 3px solid #10b981;">
-                    <div class="metric-value" style="color: #10b981;">{verified}</div>
-                    <div class="metric-label">Verified</div>
+                <div class="metric-card" style="border-top: 4px solid #10b981;">
+                    <div class="metric-value" style="color: #10b981; -webkit-text-fill-color: #10b981;">{verified}</div>
+                    <div class="metric-label">Verified & Accurate</div>
                 </div>
-                <div class="metric-card" style="border-bottom: 3px solid #f43f5e;">
-                    <div class="metric-value" style="color: #f43f5e;">{flagged}</div>
-                    <div class="metric-label">Flagged</div>
+                <div class="metric-card" style="border-top: 4px solid #f43f5e;">
+                    <div class="metric-value" style="color: #f43f5e; -webkit-text-fill-color: #f43f5e;">{flagged}</div>
+                    <div class="metric-label">Flagged for Review</div>
                 </div>
             </div>
         """, unsafe_allow_html=True)
+
+        if total == 0:
+            st.markdown("""
+                <div style="background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(255,255,255,0.05); border-radius: 24px; padding: 4rem 2rem; text-align: center; margin-top: 2rem;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🔍</div>
+                    <h4 style="color: #fff; margin-bottom: 0.5rem;">No Fact-Checkable Claims Found</h4>
+                    <p style="color: #94a3b8; font-size: 0.9rem;">The AI couldn't identify specific statistics, dates, or technical claims in this document to verify. Try a document with more data points.</p>
+                </div>
+            """, unsafe_allow_html=True)
         
         st.markdown(f"### 🛡️ Verification Feed")
         
