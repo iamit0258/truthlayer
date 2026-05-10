@@ -1,73 +1,79 @@
-# Truth Layer | AI-Powered Fact-Checking Dashboard
+# 🛡️ Truth Layer: AI-Powered Fact-Checking Dashboard
 
-This repository contains the submission for the **GEO (Generative Engine Optimization)** Product Assessment. It features a sophisticated "Truth Layer" application designed to automate the verification of marketing content, catching hallucinations and outdated statistics in real-time.
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://truthlayer.streamlit.app)
 
----
-
-## 🛡️ Part 2: The "Truth Layer" Web App
-
-### Key Features
-- **Split-Screen Dashboard**: A professional UI with a fixed document preview on the left and a scrollable analysis report on the right.
-- **Deep-Dive Citations**: Not just a status, but a full breakdown including:
-    - **AI Reasoning**: Explanation of why a claim was flagged.
-    - **Multi-Source Evidence**: Up to 3 live web snippets per claim (Title, Content, URL).
-- **Advanced Tech Stack**:
-    - **Brain**: Llama 3.3 (70B) via **Groq** for high-speed, high-accuracy reasoning.
-    - **Search**: **Tavily API** for real-time, RAG-optimized web searching.
-    - **Processing**: **PyMuPDF** for document parsing and visual previews.
-- **Premium UX**: Glassmorphism design, Outfit typography, and a dark-mode palette.
-
-### Setup & Local Execution
-1.  **Clone the repository**:
-    ```bash
-    git clone https://github.com/iamit0258/truthlayer.git
-    ```
-2.  **Install dependencies**:
-    ```bash
-    pip install -r requirements.txt
-    ```
-3.  **Run the application**:
-    ```bash
-    streamlit run app.py
-    ```
-
-### Configuration
-The app reads credentials from a `.env` file in the root directory:
-- `GROQ_API_KEY`: Your Groq API Key.
-- `TAVILY_API_KEY`: Your Tavily Search API Key.
+Truth Layer is a state-of-the-art verification platform designed for the **Generative Engine Optimization (GEO)** era. It automates the audit of marketing collateral, research papers, and technical specifications, identifying hallucinations and outdated claims in real-time using high-speed AI and RAG-optimized web search.
 
 ---
 
-## 📈 Part 1: GEO Product Strategy
+## ✨ Features
 
-The included strategy document (`GEO_Product_Strategy.pptx`) outlines a comprehensive vision for a GEO analytics platform:
-- **Core Feature**: "Share of Voice (SOV) Benchmarking" across top LLMs (ChatGPT, Perplexity, etc.).
-- **Competitive Edge**: Deep Citation Mapping vs. traditional competitors like Profound.
-- **Roadmap**: 
-    - **3 Months**: Launching AI Citation Tracking for Google AI Overviews.
-    - **1 Year**: Multi-Agent Persona Simulations & Predictive GEO Analytics.
-- **Monetization**: Usage-based tiered SaaS model.
+### 📊 Modern Analysis Dashboard
+- **Split-Screen Workspace**: Fixed document preview on the left with a dynamic analysis stream on the right.
+- **Insight Metrics**: Instant summary cards showing Total Claims, Verified claims, and Flagged inaccuracies.
+- **Dynamic Atmosphere**: A premium glassmorphism UI with "floating blobs" background animations and smooth micro-interactions.
+
+### 🕵️ Deep-Dive Verification
+- **Real-Time Fact-Checking**: Every claim is verified against live web data using the Tavily Search API.
+- **Comprehensive Citations**: Each report item includes:
+    - **Status Badges**: Visual cues for `VERIFIED`, `INACCURATE`, or `FALSE` claims.
+    - **Reality Check**: Direct corrections for identified inaccuracies.
+    - **AI Reasoning**: Transparent explanation of why a claim was flagged.
+    - **Source Feed**: Direct links to evidence snippets used for verification.
+
+### ⚡ Cutting-Edge Tech Stack
+- **Inference**: **Groq (Llama 3.3 70B)** for ultra-low latency, high-accuracy reasoning.
+- **Search Engine**: **Tavily API** for RAG-optimized, real-time web intelligence.
+- **Processing**: **PyMuPDF (fitz)** for high-fidelity document parsing and visual previews.
+- **Styling**: **Vanilla CSS & Glassmorphism** for a bespoke, premium aesthetic.
+
+---
+
+## 🛠️ How It Works
+
+1.  **Ingestion**: The system parses the uploaded PDF, extracting core text and generating a visual preview.
+2.  **Claim Extraction**: AI identifies specific, fact-checkable claims (statistics, dates, specs, etc.).
+3.  **Autonomous Research**: For each claim, a targeted web search is performed to gather live evidence.
+4.  **Verification Engine**: The LLM compares document claims against search results to determine accuracy.
+5.  **Audit Generation**: A structured, interactive report is rendered with full citations and reasoning.
 
 ---
 
-## 🛠️ Tech Stack Summary
-- **Frontend**: Streamlit (Python)
-- **LLM Engine**: Groq (Llama 3.3 70B)
-- **Web Search**: Tavily API
-- **Document Logic**: PyMuPDF
-- **Styling**: Vanilla CSS / Glassmorphism
+## 🚀 Setup & Execution
 
-## 🚀 Deployment (Streamlit Cloud)
+### 1. Local Installation
+```bash
+# Clone the repository
+git clone https://github.com/iamit0258/truthlayer.git
 
-The easiest way to deploy this app is via **Streamlit Cloud**:
-1. Connect your GitHub account to [Streamlit Cloud](https://share.streamlit.io/).
-2. Select this repository (`truthlayer`) and point it to `app.py`.
-3. In **Advanced Settings > Secrets**, add your API keys:
-   ```toml
-   GROQ_API_KEY = "your_groq_key"
-   TAVILY_API_KEY = "your_tavily_key"
-   ```
+# Install dependencies
+pip install -r requirements.txt
+```
+
+### 2. Configuration
+Create a `.env` file in the root directory:
+```env
+GROQ_API_KEY=your_groq_api_key
+TAVILY_API_KEY=your_tavily_api_key
+```
+
+### 3. Launch
+```bash
+streamlit run app.py
+```
 
 ---
+
+## 📈 Strategy Context (GEO)
+
+This project was built as part of a **GEO Product Assessment**, demonstrating how companies can protect their brand "Truth" as generative engines (like Perplexity and ChatGPT) become the primary source of information.
+
+The accompanying strategy document (`GEO_Product_Strategy.pptx`) covers:
+- **Share of Voice (SOV) Benchmarking** across LLMs.
+- **AI Citation Mapping** to ensure brand mentions are accurate and frequent.
+- **Predictive Analytics** for future generative trends.
+
+---
+
 **Author**: Amit K.
 **Date**: May 2026
