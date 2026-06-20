@@ -99,6 +99,13 @@ st.markdown("""
     }
 
     /* Global Streamlit styling overrides */
+    .block-container,
+    div[data-testid="stAppViewBlockContainer"],
+    div[data-testid="stBlockContainer"] {
+        padding-top: 0.5rem !important;
+        padding-bottom: 2rem !important;
+    }
+
     .stApp {
         background-color: #050816 !important;
         background-image: 
@@ -123,17 +130,16 @@ st.markdown("""
         background: rgba(124, 92, 255, 0.3);
     }
 
-    /* Header Navbar styling */
     .top-navbar-container {
-        display: flex;
-        justify-content: space-between;
+        display: inline-flex;
         align-items: center;
         background: rgba(5, 8, 22, 0.4);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        padding: 0.85rem 2rem;
-        margin-top: 0;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 0.65rem 1.25rem;
+        margin-top: 1rem;
         margin-bottom: 2.5rem;
         z-index: 99;
         position: relative;
@@ -916,6 +922,35 @@ st.markdown("""
     .error-title { color: #ef4444; font-weight: 700; font-size: 1.2rem; margin-bottom: 0.5rem; }
     .error-text { color: #fca5a5; font-size: 0.9rem; }
     </style>
+    <div class="top-navbar-container">
+        <div class="navbar-left">
+            <div class="logo-group">
+                <svg class="logo-icon" width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16 2L4 8L16 14L28 8L16 2Z" fill="url(#logo-grad-1)"/>
+                    <path d="M4 14L16 20L28 14L16 8L4 14Z" fill="url(#logo-grad-2)" opacity="0.8"/>
+                    <path d="M4 20L16 26L28 20L16 14L4 20Z" fill="url(#logo-grad-3)" opacity="0.6"/>
+                    <defs>
+                        <linearGradient id="logo-grad-1" x1="4" y1="2" x2="28" y2="14" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#7C5CFF"/>
+                            <stop offset="1" stop-color="#22D3EE"/>
+                        </linearGradient>
+                        <linearGradient id="logo-grad-2" x1="4" y1="8" x2="28" y2="20" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#A855F7"/>
+                            <stop offset="1" stop-color="#7C5CFF"/>
+                        </linearGradient>
+                        <linearGradient id="logo-grad-3" x1="4" y1="14" x2="28" y2="26" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#7C5CFF"/>
+                            <stop offset="1" stop-color="#A855F7"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <div class="logo-text-group">
+                    <span class="logo-title">Truth Layer</span>
+                    <span class="logo-subtitle">AI Fact-Checking Platform</span>
+                </div>
+            </div>
+        </div>
+    </div>
 """, unsafe_allow_html=True)
 
 def get_pdf_preview(pdf_path):
@@ -946,57 +981,7 @@ if 'report' not in st.session_state:
 if 'file_info' not in st.session_state:
     st.session_state.file_info = None
 
-# 0. HEADER BRAND BAR
-st.markdown("""
-    <div class="top-navbar-container">
-        <div class="navbar-left">
-            <div class="logo-group">
-                <svg class="logo-icon" width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M16 2L4 8L16 14L28 8L16 2Z" fill="url(#logo-grad-1)"/>
-                    <path d="M4 14L16 20L28 14L16 8L4 14Z" fill="url(#logo-grad-2)" opacity="0.8"/>
-                    <path d="M4 20L16 26L28 20L16 14L4 20Z" fill="url(#logo-grad-3)" opacity="0.6"/>
-                    <defs>
-                        <linearGradient id="logo-grad-1" x1="4" y1="2" x2="28" y2="14" gradientUnits="userSpaceOnUse">
-                            <stop stop-color="#7C5CFF"/>
-                            <stop offset="1" stop-color="#22D3EE"/>
-                        </linearGradient>
-                        <linearGradient id="logo-grad-2" x1="4" y1="8" x2="28" y2="20" gradientUnits="userSpaceOnUse">
-                            <stop stop-color="#A855F7"/>
-                            <stop offset="1" stop-color="#7C5CFF"/>
-                        </linearGradient>
-                        <linearGradient id="logo-grad-3" x1="4" y1="14" x2="28" y2="26" gradientUnits="userSpaceOnUse">
-                            <stop stop-color="#7C5CFF"/>
-                            <stop offset="1" stop-color="#A855F7"/>
-                        </linearGradient>
-                    </defs>
-                </svg>
-                <div class="logo-text-group">
-                    <span class="logo-title">Truth Layer</span>
-                    <span class="logo-subtitle">AI Fact-Checking Platform</span>
-                </div>
-            </div>
-        </div>
-        <div class="navbar-right">
-            <div class="contact-meta">
-                <div class="contact-pill name-pill">
-                    <span class="pill-icon">👤</span>
-                    <span class="contact-name">Amit Kumar Kuswaha</span>
-                </div>
-                <a href="mailto:amitkk.contact@gmail.com" class="contact-pill email-pill" target="_blank">
-                    <span class="pill-icon">✉️</span>
-                    <span>amitkk.contact@gmail.com</span>
-                </a>
-                <a href="https://www.amitkk.in" class="contact-pill web-pill" target="_blank">
-                    <span class="pill-icon">🌐</span>
-                    <span>amitkk.in</span>
-                </a>
-            </div>
-            <a href="https://digitalheroesco.com" target="_blank" style="text-decoration: none;">
-                <button class="digital-heroes-btn">Built for Digital Heroes</button>
-            </a>
-        </div>
-    </div>
-""", unsafe_allow_html=True)
+# 0. HEADER BRAND BAR (Rendered above in combined markdown)
 
 groq_key = os.getenv("GROQ_API_KEY")
 tavily_key = os.getenv("TAVILY_API_KEY")
