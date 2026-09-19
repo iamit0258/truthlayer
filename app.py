@@ -8,6 +8,9 @@ import base64
 import json
 from datetime import datetime
 
+# Application Version
+__version__ = "1.2.0"
+
 # Load environment variables
 load_dotenv()
 

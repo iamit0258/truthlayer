@@ -1,6 +1,6 @@
 # 🛡️ Truth Layer: AI-Powered Fact-Checking Dashboard
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://truthlayer.streamlit.app)
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://truthlayer.streamlit.app) ![Version](https://img.shields.io/badge/version-1.2.0-blue)
 
 Truth Layer is a state-of-the-art verification platform designed for the **Generative Engine Optimization (GEO)** era. It automates the audit of marketing collateral, research papers, and technical specifications, identifying hallucinations and outdated claims in real-time using high-speed AI and RAG-optimized web search.
 
